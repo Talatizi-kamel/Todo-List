@@ -1,0 +1,8 @@
+# Node.js
+node_modules/
+
+# Visual Studio Code
+.vscode/
+
+# Configuration de l'environnement
+.env
