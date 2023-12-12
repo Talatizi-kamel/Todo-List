@@ -29,7 +29,7 @@ const UserController = {
   login: (req, res, next) => {
     const { email, password } = req.body;
 
-    UserModel.getUserByEmail(email, (err, hashedPassword) => {
+    UserModel.getUserByEmail(email, (err, { hashedPassword, token }) => {
       if (err) {
         console.error("Erreur lors de la récupération de l'utilisateur :", err);
         res.status(500).json({ error: "Erreur serveur" });
@@ -40,9 +40,6 @@ const UserController = {
           password,
           hashedPassword,
           (compareErr, passwordMatch) => {
-            //console.log("Mot de passe fourni :", password);
-            //console.log("Mot de passe  :",hashedPassword);
-
             if (compareErr) {
               console.error(
                 "Erreur lors de la comparaison des mots de passe :",
@@ -52,7 +49,8 @@ const UserController = {
             } else if (!passwordMatch) {
               res.status(401).json({ error: "Mot de passe incorrect" });
             } else {
-              res.status(200).json({ message: "Connexion réussie" });
+              res.cookie("token", token, { httpOnly: true });
+              res.status(200).json({ message: "Connexion réussie", token });
             }
           }
         );
