@@ -60,7 +60,7 @@ const User = {
     });
   },
   getUserByEmail: (email, callback) => {
-    const sql = "SELECT * FROM users WHERE email = ?";
+    const sql = "SELECT password FROM users WHERE email = ?"; // Sélectionnez uniquement le mot de passe
     connection.query(sql, [email], (err, results) => {
       if (err) {
         console.error(
@@ -69,7 +69,12 @@ const User = {
         );
         callback(err, null);
       } else {
-        callback(null, results[0]); // renvoie le premier utilisateur trouvé
+        if (results.length == 1) {
+          const hashedPassword = results[0].password; // le premier utilisateur trouvé
+          callback(null, hashedPassword); // Retourne le mot de passe haché
+        } else {
+          callback(null, null);
+        }
       }
     });
   },
