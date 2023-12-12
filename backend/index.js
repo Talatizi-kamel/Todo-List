@@ -1,12 +1,12 @@
 const express = require("express");
-const UserController = require("./controllers/userController");
-const TodoListController = require("./controllers/todoListController");
+const bodyParser = require("body-parser");
+const UserRoutes = require("./routes/routeUser");
 
 const app = express();
 const port = 3000;
 
-app.get("/users", UserController.getAllUsers);
-app.get("/todolists", TodoListController.getAllTodoLists);
+app.use(bodyParser.json());
+app.use("/api", UserRoutes);
 
 app.listen(port, () => {
   console.log(`Le serveur est en écoute sur le port ${port}`);
