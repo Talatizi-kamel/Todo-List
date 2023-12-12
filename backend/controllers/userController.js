@@ -13,16 +13,31 @@ const UserController = {
     });
   },
   signin: (req, res, next) => {
-    // Récupérez les données du corps de la requête
     const userData = req.body;
 
-    // Appel au modèle pour insérer l'utilisateur
     UserModel.signin(userData, (err, result) => {
       if (err) {
         console.error("Erreur lors de l'inscription de l'utilisateur :", err);
         res.status(500).json({ error: "Erreur serveur :" + err.message });
       } else {
         res.status(201).json({ message: "Utilisateur inscris avec succès" });
+      }
+    });
+  },
+
+  login: (req, res, next) => {
+    const { email, password } = req.body;
+
+    UserModel.getUserByEmail(email, (err, user) => {
+      if (err) {
+        console.error("Erreur lors de la récupération de l'utilisateur :", err);
+        res.status(500).json({ error: "Erreur serveur" });
+      } else if (!user) {
+        res.status(401).json({ error: "Adresse e-mail non trouvée" });
+      } else if (user.password !== password) {
+        res.status(401).json({ error: "Mot de passe incorrect" });
+      } else {
+        res.status(200).json({ message: "Connexion réussie" });
       }
     });
   },
