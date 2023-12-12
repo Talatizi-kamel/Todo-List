@@ -2,7 +2,7 @@ const TodoListModel = require("../models/todoListModel");
 
 const TodoListController = {
   getTodolists: (req, res, next) => {
-    const userId = req.user.id; 
+    const userId = req.user.id;
 
     TodoListModel.getTodolistsByUserId(userId, (err, todolists) => {
       if (err) {

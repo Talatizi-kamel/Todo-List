@@ -35,3 +35,10 @@ Assurez-vous d'avoir une base de données MySQL configurée avec deux tables pri
      - `statut` (statut de la tâche, par exemple 'En attente', 'En cours', 'Terminée')
 
 Il existe une relation entre la table `users` et `todolists` via la clé étrangère `id_user` dans la table `todolists`.
+
+## Lancement du Serveur
+
+- npm install
+- npm start
+
+## API Endpoints

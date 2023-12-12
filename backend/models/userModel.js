@@ -9,6 +9,17 @@ const User = {
   getAllUsers: (callback) => {
     connection.query("SELECT * FROM users", callback);
   },
+  getUser: (id, callback) => {
+    const sql = "SELECT nom,prenom,email FROM users WHERE id = ?";
+    connection.query(sql, [id], (err, results) => {
+      if (err) {
+        console.error("Erreur lors de la récupération des todolistes :", err);
+        callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
+  },
 
   signin: (userData, callback) => {
     const { nom, prenom, email, password } = userData;
@@ -19,7 +30,7 @@ const User = {
         console.error("Erreur lors du hachage du mot de passe :", hashErr);
         callback(hashErr, null);
       } else {
-        // je vérifie d'abord si l'e-mail existe déjà dans la base de données
+        // je vérifie d abord si l email existe déjà dans la base de données
         connection.query(
           "SELECT * FROM users WHERE email = ?",
           [email],
@@ -85,7 +96,7 @@ const User = {
             }
           );
 
-          // Retournez le mot de passe haché et le token
+          // retournez le mot de passe haché et le token
           callback(null, { hashedPassword, token });
         } else {
           callback(null, null);

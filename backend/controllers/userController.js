@@ -13,6 +13,17 @@ const UserController = {
       }
     });
   },
+  getUser: (req, res, next) => {
+    const userId = req.user.id;
+    UserModel.getUser(userId, (err, users) => {
+      if (err) {
+        console.error("Erreur lors de la récupération des utilisateurs :", err);
+        res.status(500).json({ error: "Erreur serveur" });
+      } else {
+        res.json(users);
+      }
+    });
+  },
   signin: (req, res, next) => {
     const userData = req.body;
 
