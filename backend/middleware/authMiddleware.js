@@ -2,8 +2,6 @@ const jwt = require("jsonwebtoken");
 
 function authMiddleware(req, res, next) {
   const token = req.cookies.token;
-
-  n;
   if (!token) {
     return res.status(401).json({ error: "Pas de token, accès non autorisé" });
   }
