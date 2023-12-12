@@ -20,6 +20,22 @@ const User = {
       }
     });
   },
+  updateUser: (userId, updatedUserData, callback) => {
+    const { nom, prenom, email } = updatedUserData;
+
+    const sql = "UPDATE users SET nom = ?, prenom = ?, email = ? WHERE id = ?";
+    connection.query(sql, [nom, prenom, email, userId], (err, result) => {
+      if (err) {
+        console.error(
+          "Erreur lors de la mise à jour de l'utilisateur dans la base de données :",
+          err
+        );
+        callback(err, null);
+      } else {
+        callback(null, result);
+      }
+    });
+  },
 
   signin: (userData, callback) => {
     const { nom, prenom, email, password } = userData;

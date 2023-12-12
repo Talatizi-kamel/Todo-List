@@ -24,6 +24,19 @@ const UserController = {
       }
     });
   },
+  updateUser: (req, res, next) => {
+    const userId = req.user.id;
+    const updatedUserData = req.body;
+
+    UserModel.updateUser(userId, updatedUserData, (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la mise à jour de l'utilisateur :", err);
+        res.status(500).json({ error: "Erreur serveur" });
+      } else {
+        res.json({ message: "Utilisateur mis à jour avec succès" });
+      }
+    });
+  },
   signin: (req, res, next) => {
     const userData = req.body;
 
