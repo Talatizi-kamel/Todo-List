@@ -58,6 +58,21 @@ const TodoList = {
       }
     );
   },
+  deleteTodo: (id, callback) => {
+    const sql = "DELETE FROM todolists WHERE id =?";
+
+    connection.query(sql, [id], (err, result) => {
+      if (err) {
+        console.error(
+          "Erreur lors de la suppression de la todolist dans la base de données :",
+          err
+        );
+        callback(err, null);
+      } else {
+        callback(null, result);
+      }
+    });
+  },
 };
 
 module.exports = TodoList;

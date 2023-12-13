@@ -48,6 +48,18 @@ const TodoListController = {
       }
     );
   },
+  deleteTodo: (req, res, next) => {
+    const id = req.params.id;
+
+    TodoListModel.deleteTodo(id, (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la suppression de la todolist :", err);
+        res.status(500).json({ error: "Erreur serveur" });
+      } else {
+        res.json({ message: "la todolist supprimée avec succès" });
+      }
+    });
+  },
 };
 
 module.exports = TodoListController;

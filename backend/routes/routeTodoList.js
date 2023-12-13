@@ -4,7 +4,8 @@ const TodoController = require("../controllers/todoListController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 router.get("/todolists", authMiddleware, TodoController.getTodolists);
-router.put("/todolists/:id", authMiddleware, TodoController.updateTodo);
 router.post("/todolists/insert", authMiddleware, TodoController.createTodo);
+router.put("/todolists/:id", authMiddleware, TodoController.updateTodo);
+router.delete("/todolists/:id", authMiddleware, TodoController.deleteTodo);
 
 module.exports = router;
