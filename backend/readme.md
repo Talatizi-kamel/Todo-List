@@ -45,7 +45,7 @@ Il existe une relation entre la table `users` et `todolists` via la clé étrang
 
 ### Utilisateurs
 
-- **endpoints non protéger**
+- #### endpoints non protéger
 
 - **_Inscription d'un nouvel utilisateur_**
 
@@ -63,7 +63,7 @@ Il existe une relation entre la table `users` et `todolists` via la clé étrang
   - `POST /api/users/login`
   - Connectez un utilisateur existant en fournissant son email et son mot de passe dans le corps de la requête.
 
-- **endpoints protéger**
+- #### endpoints protéger
 
 - **_Récupérer le profile d un utilisateur_**
 
