@@ -47,48 +47,47 @@ Il existe une relation entre la table `users` et `todolists` via la clé étrang
 
 #### endpoints non protéger
 
-- **_Inscription d'un nouvel utilisateur_**
+1. **_Inscription d'un nouvel utilisateur_**
 
-  - `POST /api/users/signin`
-  - Créez un nouvel utilisateur en fournissant les informations nécessaires dans le corps de la requête.
-    exemple: '{
-    "nom": "Nom",
-    "prenom": "Prénom",
-    "email": "email@example.com",
-    "password": "motdepasse"
-    }'''
+- `POST /api/users/signin`
+- Créez un nouvel utilisateur en fournissant les informations nécessaires dans le corps de la requête.
+  exemple: '{
+  "nom": "Nom",
+  "prenom": "Prénom",
+  "email": "email@example.com",
+  "password": "motdepasse"
+  }'''
 
-- **_Connexion d'un utilisateur_**
+2. **_Connexion d'un utilisateur_**
 
-  - `POST /api/users/login`
-  - Connectez un utilisateur existant en fournissant son email et son mot de passe dans le corps de la requête.
+- `POST /api/users/login`
+- Connectez un utilisateur existant en fournissant son email et son mot de passe dans le corps de la requête.
 
 #### endpoints protéger
 
-- **_Récupérer le profile d un utilisateur_**
+1. **_Récupérer le profile d un utilisateur_**
 
-  - `GET /users/profile`
-  - afficher les information du l utilisateur connecté
+- `GET /users/profile`
+- afficher les information du l utilisateur connecté
 
-  - **_modifier le profile d un utilisateur_**
-  - `PUT /users/profile`
-  - modifier les information du l utilisateur connecté
+- **_modifier le profile d un utilisateur_**
+- `PUT /users/profile`
+- modifier les information du l utilisateur connecté
 
 ### Tâches (Todo List)
 
-- **Récupérer toutes les tâches d'un utilisateur**
+1. **Ajouter une nouvelle tâche**
 
-- **Ajouter une nouvelle tâche**
+- `POST /api/todolists`
+  -il faut etre connecté pour ajouter une tache
 
-  - `POST /api/todolists`
-    -il faut etre connecté pour ajouter une tache
+2. **Mettre à jour une tâche existante**
 
-- **Mettre à jour une tâche existante**
+- `PUT /api/todos/:id`
+- Mettez à jour une tâche existante en fournissant l'ID de la tâche dans la route et les détails mis à jour dans le corps de la requête.
+  -et l utilisateur il peut modifier que c est taches a lui
 
-  - `PUT /api/todos/:id`
-  - Mettez à jour une tâche existante en fournissant l'ID de la tâche dans la route et les détails mis à jour dans le corps de la requête.
-    -et l utilisateur il peut modifier que c est taches a lui
+3. **Supprimer une tâche**
 
-- **Supprimer une tâche**
-  - `DELETE /api/todos/:id`
-  - Supprimez une tâche de la to-do list en fournissant l'ID de la tâche dans la route.
+- `DELETE /api/todos/:id`
+- Supprimez une tâche de la to-do list en fournissant l'ID de la tâche dans la route.
