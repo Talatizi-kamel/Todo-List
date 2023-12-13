@@ -40,7 +40,7 @@ const User = {
   signin: (userData, callback) => {
     const { nom, prenom, email, password } = userData;
 
-    // Hash du mot de passe
+    // hash du mot de passe
     bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
       if (hashErr) {
         console.error("Erreur lors du hachage du mot de passe :", hashErr);
