@@ -83,11 +83,21 @@ Il existe une relation entre la table `users` et `todolists` via la clé étrang
 
 2. **Mettre à jour une tâche existante**
 
-- `PUT /api/todos/:id`
+- `PUT /api/todolists/:id`
 - Mettez à jour une tâche existante en fournissant l'ID de la tâche dans la route et les détails mis à jour dans le corps de la requête.
   -et l utilisateur il peut modifier que c est taches a lui
 
 3. **Supprimer une tâche**
 
-- `DELETE /api/todos/:id`
+- `DELETE /api/todolists/:id`
 - Supprimez une tâche de la to-do list en fournissant l'ID de la tâche dans la route.
+
+4. **afficher les tâche**
+
+- `GET /api/todolists`
+- affiche toutes les taches ou juste celles qui sont liées au user connecté si on ne précise pas d id
+
+5. **afficher une tâche**
+
+- `GET /api/todolists/:id`
+- Affichez une tâche spécifique en fournissant l'ID de la tâche dans la route.

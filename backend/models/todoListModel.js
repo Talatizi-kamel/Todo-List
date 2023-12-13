@@ -8,11 +8,25 @@ const TodoList = {
     connection.query("SELECT * FROM todolists", callback);
   },
   getTodolistsByUserId: (userId, callback) => {
-    const sql = "SELECT * FROM todolists WHERE id_user = ?"; // sélectionnez les todolistes par ID utilisateur
+    const sql = "SELECT * FROM todolists WHERE id_user = ?"; // sélectionnez les todolistes par id utilisateur
     connection.query(sql, [userId], (err, results) => {
       if (err) {
         console.error("Erreur lors de la récupération des todolistes :", err);
         callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
+  },
+  getTodolistsId: (id, callback) => {
+    const sql = "SELECT * FROM todolists WHERE id = ?"; // sélectionnez les todolistes par id
+    connection.query(sql, [id], (err, results) => {
+      if (err) {
+        console.error("Erreur lors de la récupération de la todolistes :", err);
+        callback(err, null);
+      } else if (results.length === 0) {
+        const error = new Error("la todo n'est existe pas .");
+        callback(error, null);
       } else {
         callback(null, results);
       }
@@ -68,6 +82,11 @@ const TodoList = {
           err
         );
         callback(err, null);
+      } else if (result.affectedRows === 0) {
+        const error = new Error(
+          "Aucune todo supprimée, car elle n'existe pas."
+        );
+        callback(error, null);
       } else {
         callback(null, result);
       }
