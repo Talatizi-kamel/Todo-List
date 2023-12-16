@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 function Header() {
   return (
     <header className={`${styles.header} d-flex flex-row align-items-center`}>
-      <i class="fa-solid fa-bars mr-15"></i>
+      <i className="fa-solid fa-bars mr-15"></i>
       <div className="flex-fill">
         <NavLink to="/">
           {" "}
