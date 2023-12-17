@@ -74,7 +74,11 @@ const UserController = {
               res.status(401).json({ error: "Mot de passe incorrect" });
             } else {
               console.log({ message: "Connexion réussie", token });
-              res.cookie("token", token, { httpOnly: true });
+              res.cookie("token", token, {
+                httpOnly: false,
+                secure: true,
+                sameSite: "none",
+              });
               res.status(200).json({ message: "Connexion réussie", token });
             }
           }
