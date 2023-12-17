@@ -11,12 +11,17 @@ function AuthProvider({ children }) {
     const newuser = await LoginUser(credentials);
     setUser(newuser);
   }
-  console.log(initialUser);
+  async function logout() {
+    // Logique de déconnexion ici
+    setUser(null);
+  }
+  //console.log(initialUser);
   return (
     <AuthContext.Provider
       value={{
         user,
         login,
+        logout,
       }}
     >
       {children}

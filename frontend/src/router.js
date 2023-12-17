@@ -6,6 +6,7 @@ const Homepage = lazy(() => import("./components/Homepage"));
 const Signup = lazy(() => import("./components/signup"));
 const Login = lazy(() => import("./components/Login"));
 const Profile = lazy(() => import("./components/Profile"));
+const Content = lazy(() => import("./components/content"));
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "Todolists",
+        element: <Content />,
       },
     ],
   },

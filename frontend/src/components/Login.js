@@ -7,7 +7,7 @@ import { AuthContext } from "../context";
 import { useContext } from "react";
 
 function Login() {
-  const { login } = useContext(AuthContext);
+  const { login, user } = useContext(AuthContext);
   const validationSchema = yup.object({
     email: yup
       .string()
