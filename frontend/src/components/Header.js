@@ -16,10 +16,10 @@ function Header() {
       </div>
       {user ? (
         <ul>
-          <NavLink to="Login">
+          <NavLink to="Profile">
             <button className="btn btn-primary mr-5">Profil</button>
           </NavLink>
-          <NavLink to="signup">
+          <NavLink to="/">
             <button className="btn btn-reverse-primary ml-5">
               Déconnexion
             </button>
