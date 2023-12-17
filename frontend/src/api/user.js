@@ -33,7 +33,7 @@ export async function LoginUser(credentials) {
 
   if (response.ok) {
     document.cookie = `token=${body.token}; path=/; secure; samesite=None`;
-    console.log("cc je suis le coockie" + document.cookie);
+    //console.log("cc je suis le coockie" + document.cookie);
 
     console.log(body);
     return body.token;
@@ -49,24 +49,44 @@ export async function LoginUser(credentials) {
 const API_PROFILE = "http://localhost:3000/api/users/profile";
 
 export async function profile() {
-  const token = localStorage.getItem("token");
+  const token = getCookie("token");
 
   if (!token) {
     throw new Error("Token manquant");
   }
 
-  const response = await fetch(API_PROFILE, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    const response = await fetch(API_PROFILE, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error("Échec de la récupération du profil");
+    if (!response.ok) {
+      throw new Error("Échec de la récupération du profil");
+    }
+
+    const userProfile = await response.json();
+    console.log(userProfile);
+    return userProfile;
+  } catch (error) {
+    console.error("Erreur lors de la requête vers la route protégée :", error);
+    throw error;
+  }
+}
+
+// Fonction utilitaire pour récupérer la valeur d'un cookie par son nom
+export function getCookie(name) {
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split("=");
+    if (cookieName === name) {
+      console.log("je suis le" + cookieValue);
+      return cookieValue;
+    }
   }
 
-  const userProfile = await response.json();
-  return userProfile;
+  return null;
 }

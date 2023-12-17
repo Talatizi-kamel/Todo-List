@@ -2,9 +2,12 @@ import styles from "./Login.module.scss";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoginUser } from "../api/user";
+
+import { AuthContext } from "../context";
+import { useContext } from "react";
 
 function Login() {
+  const { login } = useContext(AuthContext);
   const validationSchema = yup.object({
     email: yup
       .string()
@@ -35,7 +38,7 @@ function Login() {
   const submit = handleSubmit(async (credentials) => {
     try {
       clearErrors();
-      await LoginUser(credentials);
+      await login(credentials);
     } catch (message) {
       setError("generic", { type: "generic", message });
     }
