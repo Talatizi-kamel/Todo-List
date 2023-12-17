@@ -78,6 +78,7 @@ const UserController = {
                 httpOnly: false,
                 secure: true,
                 sameSite: "none",
+                expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
               });
               res.status(200).json({ message: "Connexion réussie", token });
             }

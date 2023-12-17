@@ -1,10 +1,13 @@
 const jwt = require("jsonwebtoken");
 
 function authMiddleware(req, res, next) {
-  const token = req.cookies.token;
-  if (!token) {
+  const authorizationHeader = req.headers.authorization;
+
+  if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
     return res.status(401).json({ error: "Pas de token, accès non autorisé" });
   }
+
+  const token = authorizationHeader.slice(7); // Supprime "Bearer " pour récupérer le token
 
   try {
     const decoded = jwt.verify(
