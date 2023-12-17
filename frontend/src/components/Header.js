@@ -12,7 +12,9 @@ function Header() {
         </NavLink>
       </div>
       <ul>
-        <button className="btn btn-primary mr-5">connexion</button>
+        <NavLink to="Login">
+          <button className="btn btn-primary mr-5">connexion</button>
+        </NavLink>
       </ul>
       <ul>
         <NavLink to="signup">

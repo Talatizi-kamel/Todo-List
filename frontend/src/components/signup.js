@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createUser } from "../api/user";
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const validationSchema = yup.object({
     nom: yup
@@ -49,7 +49,7 @@ function Signup() {
     try {
       clearErrors();
       await createUser(user);
-      // navigate('/signin');
+      navigate("/login");
     } catch (message) {
       setError("generic", { type: "generic", message });
     }
