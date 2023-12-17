@@ -43,7 +43,7 @@ const UserController = {
     UserModel.signin(userData, (err, result) => {
       if (err) {
         //console.error("Erreur lors de l'inscription de l'utilisateur :", err);
-        res.status(500).json({ error: "Erreur serveur :" + err.message });
+        res.status(400).json(" " + err.message);
       } else {
         res.status(201).json({ message: "Utilisateur inscris avec succès" });
       }
