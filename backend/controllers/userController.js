@@ -53,37 +53,42 @@ const UserController = {
   login: (req, res, next) => {
     const { email, password } = req.body;
 
-    UserModel.getUserByEmail(email, (err, { hashedPassword, token }) => {
+    UserModel.getUserByEmail(email, (err, result) => {
       if (err) {
         console.error("Erreur lors de la récupération de l'utilisateur :", err);
         res.status(500).json({ error: "Erreur serveur" });
-      } else if (!hashedPassword) {
+      } else if (!result) {
         res.status(401).json({ error: "Adresse e-mail non trouvée" });
       } else {
-        bcrypt.compare(
-          password,
-          hashedPassword,
-          (compareErr, passwordMatch) => {
-            if (compareErr) {
-              console.error(
-                "Erreur lors de la comparaison des mots de passe :",
-                compareErr
-              );
-              res.status(500).json({ error: "Erreur serveur" });
-            } else if (!passwordMatch) {
-              res.status(401).json({ error: "Mot de passe incorrect" });
-            } else {
-              console.log({ message: "Connexion réussie", token });
-              res.cookie("token", token, {
-                httpOnly: false,
-                secure: true,
-                sameSite: "none",
-                expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-              });
-              res.status(200).json({ message: "Connexion réussie", token });
+        const { hashedPassword, token } = result || {}; // Assurez-vous que result n'est pas null
+        if (!hashedPassword) {
+          res.status(401).json({ error: "Adresse e-mail non trouvée" });
+        } else {
+          bcrypt.compare(
+            password,
+            hashedPassword,
+            (compareErr, passwordMatch) => {
+              if (compareErr) {
+                console.error(
+                  "Erreur lors de la comparaison des mots de passe :",
+                  compareErr
+                );
+                res.status(500).json({ error: "Erreur serveur" });
+              } else if (!passwordMatch) {
+                res.status(401).json({ error: "Mot de passe incorrect" });
+              } else {
+                console.log({ message: "Connexion réussie", token });
+                res.cookie("token", token, {
+                  httpOnly: false,
+                  secure: true,
+                  sameSite: "none",
+                  expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                });
+                res.status(200).json({ message: "Connexion réussie", token });
+              }
             }
-          }
-        );
+          );
+        }
       }
     });
   },

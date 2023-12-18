@@ -1,5 +1,13 @@
 import { useState } from "react";
-
+export function getCookie(name) {
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split("=");
+    if (cookieName === name) {
+      return cookieValue;
+    }
+  }
+}
 function AddTodo({ addTodo }) {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,18 +30,16 @@ function AddTodo({ addTodo }) {
       setLoading(true);
       setError(null);
       const token = getCookie("token");
-
-      if (!token) {
-        throw new Error("Token manquant");
-      }
       const response = await fetch(
         "http://localhost:3000/api/todolists/insert",
         {
           method: "POST",
           body: JSON.stringify({
             titre: value,
-            description: "ma todo", // Assurez-vous de mettre la clé correcte
-            statut: "en cours", // Assurez-vous de mettre la clé correcte
+            description: "test",
+            statut: "en cours",
+            edit: false,
+            done: false,
           }),
           headers: {
             "Content-type": "application/json",
@@ -78,14 +84,5 @@ function AddTodo({ addTodo }) {
     </div>
   );
 }
-export function getCookie(name) {
-  const cookies = document.cookie.split(";");
-  for (const cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.trim().split("=");
-    if (cookieName === name) {
-      console.log("je suis le" + cookieValue);
-      return cookieValue;
-    }
-  }
-}
+
 export default AddTodo;

@@ -1,32 +1,37 @@
 import { useState } from "react";
-import { getCookie } from "./AddTodo";
 
+export function getCookie(name) {
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split("=");
+    if (cookieName === name) {
+      return cookieValue;
+    }
+  }
+}
 function EditTodo({ todo, updateTodo }) {
-  const [value, setValue] = useState(todo.content);
+  const [value, setValue] = useState(todo.titre);
   const [loading, setLoading] = useState(false);
 
   async function tryUpdateTodo(newTodo) {
-    const token = getCookie("token");
-
-    if (!token) {
-      throw new Error("Token manquant");
-    }
     try {
       setLoading(true);
-      const { _id, ...newTodoWithoutId } = newTodo;
+      const token = getCookie("token");
+      const { id, ...newTodoWithoutId } = newTodo;
       const response = await fetch(
         `http://localhost:3000/api/todolists/${todo.id}`,
         {
-          method: "PATCH",
+          method: "PUT",
           body: JSON.stringify(newTodoWithoutId),
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
       if (response.ok) {
         const newTodo = await response.json();
+        console.log("je suis la" + newTodo);
         updateTodo(newTodo);
       } else {
         console.log("Erreur");
@@ -44,7 +49,7 @@ function EditTodo({ todo, updateTodo }) {
   }
 
   function handleKeyDown(e) {
-    if (e.code === "Enter" && value.length) {
+    if (value.length) {
       tryUpdateTodo({ ...todo, content: value, edit: false });
       setValue("");
     }
@@ -68,7 +73,7 @@ function EditTodo({ todo, updateTodo }) {
         className="mr-15 flex-fill"
       />
       <button
-        onClick={() => tryUpdateTodo({ ...todo, edit: false })}
+        onClick={() => tryUpdateTodo({ ...todo })}
         className="btn btn-reverse-primary mr-15"
       >
         Annuler

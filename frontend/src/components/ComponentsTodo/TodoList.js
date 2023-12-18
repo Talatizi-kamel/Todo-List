@@ -6,10 +6,10 @@ function TodoList({ todoList, deleteTodo, updateTodo }) {
     <ul>
       {todoList.map((todo) =>
         todo.edit ? (
-          <EditTodo key={todo._id} todo={todo} updateTodo={updateTodo} />
+          <EditTodo key={todo.id} todo={todo.titre} updateTodo={updateTodo} />
         ) : (
           <TodoItem
-            key={todo._id}
+            key={todo.id}
             todo={todo}
             updateTodo={updateTodo}
             deleteTodo={deleteTodo}

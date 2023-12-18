@@ -1,6 +1,12 @@
 .d-flex {
   display: flex;
 }
+.box {
+  flex: 1;
+  border: 1px solid #000;
+  margin: 10px;
+  padding: 10px;
+}
 
 .flex-row {
   flex-direction: row;
@@ -20,4 +26,12 @@
 
 .align-items-center {
   align-items: center;
+}
+.justify-content-g {
+  display: flex;
+  justify-content: flex-start; /* Aligner les éléments à gauche */
+  gap: 20px;
+}
+.justify-content-d {
+  justify-content: flex-end;
 }

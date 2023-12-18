@@ -1,10 +1,18 @@
-import styles from "./Content.module.scss";
 import { useEffect } from "react";
-import { useReducer } from "react";
-import { useState } from "react";
-import AddTodo from "./ComponentsTodo/AddTodo";
-import TodoList from "./ComponentsTodo/TodoList";
-import { getCookie } from "./ComponentsTodo/AddTodo";
+import { useReducer, useState } from "react";
+import AddTodo from "../components/ComponentsTodo/AddTodo";
+import TodoList from "../components/ComponentsTodo/TodoList";
+import styles from "./Content.module.scss";
+
+export function getCookie(name) {
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split("=");
+    if (cookieName === name) {
+      return cookieValue;
+    }
+  }
+}
 
 function todoReducer(state, action) {
   switch (action.type) {
@@ -24,14 +32,14 @@ function todoReducer(state, action) {
       return {
         ...state,
         todoList: state.todoList.map((t) =>
-          t._id === action.todo._id ? action.todo : t
+          t.id === action.todo.id ? action.todo : t
         ),
       };
     }
     case "DELETE_TODO": {
       return {
         ...state,
-        todoList: state.todoList.filter((t) => t._id !== action.todo._id),
+        todoList: state.todoList.filter((t) => t.id !== action.todo.id),
       };
     }
     default: {
@@ -47,15 +55,12 @@ function Content() {
   useEffect(() => {
     let shouldCancel = false;
     async function fetchTodoList() {
-      const token = getCookie("token");
-
-      if (!token) {
-        throw new Error("Token manquant");
-      }
       try {
+        const token = getCookie("token");
         const response = await fetch(`http://localhost:3000/api/todolists`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         });
         if (response.ok) {
@@ -93,19 +98,52 @@ function Content() {
   function updateTodo(updatedTodo) {
     dispatch({ type: "UPDATE_TODO", todo: updatedTodo });
   }
+
+  // Filtrer les todos par statut
+  const todosEnCours = state.todoList.filter(
+    (todo) => todo.statut === "en cours"
+  );
+  const todosTermines = state.todoList.filter(
+    (todo) => todo.statut === "terminé"
+  );
+  console.log("Todos:", state.todoList);
+  console.log("En cours:", todosEnCours);
+  console.log("Terminés:", todosTermines);
+
   return (
-    <div className="d-flex flex-row justify-content-center align-items-center p-20">
-      <div className="card container p-20">
+    <div className="d-flex flex-column justify-content-center align-items-center p-20">
+      <div className={`${styles.container} card`}>
         <h1 className="mb-20">Todo list</h1>
-        <AddTodo addTodo={addTodo} />
+
         {loading ? (
           <p>Chargement en cours</p>
         ) : (
-          <TodoList
-            todoList={state.todoList}
-            deleteTodo={deleteTodo}
-            updateTodo={updateTodo}
-          />
+          <>
+            <div className={`${styles.box} `}>
+              <AddTodo addTodo={addTodo} /> {/* Déplacez l'AddTodo ici */}
+            </div>
+
+            <div className="d-flex flex-row">
+              {" "}
+              {/* Utilisez flex-row pour afficher les deux listes sur la même ligne */}
+              <div className={`${styles.box} `}>
+                <h2 className={`${styles.Encours}`}>En cours</h2>
+                <TodoList
+                  todoList={todosEnCours}
+                  deleteTodo={deleteTodo}
+                  updateTodo={updateTodo}
+                />
+              </div>
+              <div className={`${styles.box} `}>
+                <h2 className={`${styles.termine}`}>Terminés</h2>
+                <TodoList
+                  todoList={todosTermines}
+                  deleteTodo={deleteTodo}
+                  updateTodo={updateTodo}
+                />
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>

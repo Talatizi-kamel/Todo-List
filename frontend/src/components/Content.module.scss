@@ -1,16 +1,21 @@
-.grid {
-  display: grid;
-  place-content: center;
-  grid-template-columns: repeat(3, 350px);
-  grid-auto-columns: repeat(3, 350px);
-  gap: 20px;
+.container {
+  display: flex;
 }
 
-.contentCard {
-  width: 1130px;
+.box {
+  flex: 1;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  margin: 10px;
+  padding: 10px;
 }
 
-.elem {
-  height: 200px;
-  border: 1px solid red;
+.Encours {
+  background-color: var(--primary);
+  border-radius: var(--border-radius);
+}
+
+.termine {
+  background-color: var(--green);
+  border-radius: var(--border-radius);
 }
