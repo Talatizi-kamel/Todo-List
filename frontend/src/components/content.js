@@ -53,7 +53,6 @@ function Content() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let shouldCancel = false;
     async function fetchTodoList() {
       try {
         const token = getCookie("token");
@@ -65,27 +64,25 @@ function Content() {
         });
         if (response.ok) {
           const todos = await response.json();
-          if (!shouldCancel) {
-            if (Array.isArray(todos)) {
-              dispatch({ type: "FETCH_TODOS", todoList: todos });
-            } else {
-              dispatch({ type: "FETCH_TODOS", todoList: [todos] });
-            }
-          }
+          dispatch({ type: "FETCH_TODOS", todoList: todos });
         } else {
-          console.log("Erreur");
+          console.log("Erreur lors de la récupération des tâches");
         }
       } catch (e) {
-        console.log("Erreur");
+        console.log("Erreur lors de la récupération des tâches", e);
       } finally {
         setLoading(false);
       }
     }
-    fetchTodoList();
+
+    fetchTodoList(); // Appelez la fonction directement sans condition
+
+    const intervalId = setInterval(fetchTodoList, 600); // Rafraîchir toutes les minutes (ajustez selon vos besoins)
+
     return () => {
-      shouldCancel = true;
+      clearInterval(intervalId); // Nettoyer l'intervalle lors du démontage du composant
     };
-  }, []);
+  }, []); // Aucune dépendance ici pour s'assurer que l'effet s'exécute une seule fois
 
   function addTodo(newTodo) {
     dispatch({ type: "ADD_TODO", todo: newTodo });
@@ -106,44 +103,37 @@ function Content() {
   const todosTermines = state.todoList.filter(
     (todo) => todo.statut === "terminé"
   );
-  console.log("Todos:", state.todoList);
-  console.log("En cours:", todosEnCours);
-  console.log("Terminés:", todosTermines);
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center p-20">
+      <h1 className="mb-20">Mes Todo lists</h1>
+      <div
+        className={`${styles.box} container flex-column justify-content-center card d-flex`}
+      >
+        <AddTodo addTodo={addTodo} />
+      </div>
       <div className={`${styles.container} card`}>
-        <h1 className="mb-20">Todo list</h1>
-
         {loading ? (
           <p>Chargement en cours</p>
         ) : (
-          <>
+          <div className="d-flex flex-row">
             <div className={`${styles.box} `}>
-              <AddTodo addTodo={addTodo} /> {/* Déplacez l'AddTodo ici */}
+              <h2 className={`${styles.Encours}`}>En cours</h2>
+              <TodoList
+                todoList={todosEnCours}
+                deleteTodo={deleteTodo}
+                updateTodo={updateTodo}
+              />
             </div>
-
-            <div className="d-flex flex-row">
-              {" "}
-              {/* Utilisez flex-row pour afficher les deux listes sur la même ligne */}
-              <div className={`${styles.box} `}>
-                <h2 className={`${styles.Encours}`}>En cours</h2>
-                <TodoList
-                  todoList={todosEnCours}
-                  deleteTodo={deleteTodo}
-                  updateTodo={updateTodo}
-                />
-              </div>
-              <div className={`${styles.box} `}>
-                <h2 className={`${styles.termine}`}>Terminés</h2>
-                <TodoList
-                  todoList={todosTermines}
-                  deleteTodo={deleteTodo}
-                  updateTodo={updateTodo}
-                />
-              </div>
+            <div className={`${styles.box} `}>
+              <h2 className={`${styles.termine}`}>Terminés</h2>
+              <TodoList
+                todoList={todosTermines}
+                deleteTodo={deleteTodo}
+                updateTodo={updateTodo}
+              />
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

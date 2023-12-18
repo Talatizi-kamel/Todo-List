@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./Todoitem.module.scss";
 export function getCookie(name) {
   const cookies = document.cookie.split(";");
   for (const cookie of cookies) {
@@ -85,21 +86,25 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
       setLoading(false);
     }
   }
+  const handleCancel = () => {
+    setEditMode(false);
+  };
 
   return (
     <li className="mb-10 d-flex flex-row justify-content-center align-items-center p-10">
       {loading ? (
         <span className="flex-fill mr-15">Chargement ....</span>
       ) : editMode ? (
-        <div className="d-flex flex-column">
+        <div className={`d-flex flex-column ${styles.editmode}`}>
           <input
             type="text"
             value={editedTitle}
             onChange={(e) => setEditedTitle(e.target.value)}
             placeholder="Titre"
-            className="mr-15"
+            className={`${styles.editmodeinput}`}
           />
           <select
+            className={`${styles.editmodeselect}`}
             value={editedStatus}
             onChange={(e) => setEditedStatus(e.target.value)}
           >
@@ -108,6 +113,9 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
           </select>
           <button onClick={tryUpdateTodo} className="btn btn-primary">
             Sauvegarder
+          </button>
+          <button onClick={handleCancel} className="btn btn-secondary">
+            Annuler
           </button>
         </div>
       ) : (
@@ -128,7 +136,7 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              tryDeleteTodo(); // Appel de la fonction de suppression côté serveur
+              deleteTodo(todo);
             }}
             className="btn btn-reverse-primary"
           >
