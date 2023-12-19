@@ -37,7 +37,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "Todolists",
-        element: <Content />,
+        element: (
+          <ProtectedRoute>
+            <Content />,
+          </ProtectedRoute>
+        ),
       },
     ],
   },

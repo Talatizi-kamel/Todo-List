@@ -10,10 +10,21 @@ export function getCookie(name) {
     }
   }
 }
+
 function Profile() {
   const { user, updateUser } = useContext(AuthContext);
   const [editMode, setEditMode] = useState(false);
   const [editedUser, setEditedUser] = useState({ ...user[0] });
+  const [notification, setNotification] = useState(null);
+
+  const showNotification = (message) => {
+    setNotification(message);
+
+    // Effacer la notification après quelques secondes
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000); // La notification disparaîtra après 3 secondes
+  };
 
   const handleEdit = () => {
     setEditMode(true);
@@ -36,12 +47,15 @@ function Profile() {
         // Mise à jour du contexte avec les nouvelles informations de l'utilisateur
         updateUser(updatedUser);
         setEditMode(false); // Désactiver le mode édition après la sauvegarde réussie
+
+        // Afficher la notification de succès
       } else {
         // Gérer les erreurs si la requête échoue
         console.log("Erreur lors de la mise à jour du profil");
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour du profil", error);
+      showNotification("Profil mis à jour avec succès");
     }
   };
 
@@ -54,8 +68,13 @@ function Profile() {
   };
 
   return (
-    <div className="flex-fill d-flex justify-content-center align-items-center">
+    <div className="flex-fill d-flex flex-row container  justify-content-center align-items-center">
       <div className={`${styles.profileContainer} card p-20`}>
+        {notification && (
+          <div className="notification ">
+            <p>{notification}</p>
+          </div>
+        )}
         <h3 className="mb-20">Page de profil</h3>
         {editMode ? (
           <form>

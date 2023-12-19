@@ -48,7 +48,7 @@ function Login() {
   return (
     <>
       {user ? (
-        <Navigate to="/Profile" />
+        <Navigate to="/Todolists" />
       ) : (
         <div className="flex-fill d-flex align-items-center justify-content-center">
           <form

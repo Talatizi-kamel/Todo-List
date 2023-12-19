@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState, useCallback, useMemo } from "react";
 import AddTodo from "../components/ComponentsTodo/AddTodo";
 import TodoList from "../components/ComponentsTodo/TodoList";
 import styles from "./Content.module.scss";
@@ -53,7 +52,7 @@ function Content() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchTodoList() {
+    const fetchTodoList = async () => {
       try {
         const token = getCookie("token");
         const response = await fetch(`http://localhost:3000/api/todolists`, {
@@ -62,50 +61,65 @@ function Content() {
             "Content-Type": "application/json",
           },
         });
+
         if (response.ok) {
           const todos = await response.json();
           dispatch({ type: "FETCH_TODOS", todoList: todos });
         } else {
           console.log("Erreur lors de la récupération des tâches");
         }
-      } catch (e) {
-        console.log("Erreur lors de la récupération des tâches", e);
+      } catch (error) {
+        console.log("Erreur lors de la récupération des tâches", error);
       } finally {
         setLoading(false);
       }
-    }
-
-    fetchTodoList(); // Appelez la fonction directement sans condition
-
-    const intervalId = setInterval(fetchTodoList, 600); // Rafraîchir toutes les minutes (ajustez selon vos besoins)
-
-    return () => {
-      clearInterval(intervalId); // Nettoyer l'intervalle lors du démontage du composant
     };
+
+    try {
+      fetchTodoList();
+
+      const intervalId = setInterval(fetchTodoList, 6000); // Rafraîchir toutes les minutes (ajustez selon vos besoins)
+
+      return () => {
+        clearInterval(intervalId); // Nettoyer l'intervalle lors du démontage du composant
+      };
+    } catch (error) {
+      console.error("Erreur lors de l'initialisation de l'effet", error);
+    }
   }, []); // Aucune dépendance ici pour s'assurer que l'effet s'exécute une seule fois
 
-  function addTodo(newTodo) {
-    dispatch({ type: "ADD_TODO", todo: newTodo });
-  }
-
-  function deleteTodo(deletedTodo) {
-    dispatch({ type: "DELETE_TODO", todo: deletedTodo });
-  }
-
-  function updateTodo(updatedTodo) {
-    dispatch({ type: "UPDATE_TODO", todo: updatedTodo });
-  }
-
-  // Filtrer les todos par statut
-  const todosEnCours = state.todoList.filter(
-    (todo) => todo.statut === "en cours"
+  const addTodo = useCallback(
+    (newTodo) => {
+      dispatch({ type: "ADD_TODO", todo: newTodo });
+    },
+    [dispatch]
   );
-  const todosTermines = state.todoList.filter(
-    (todo) => todo.statut === "terminé"
+
+  const deleteTodo = useCallback(
+    (deletedTodo) => {
+      dispatch({ type: "DELETE_TODO", todo: deletedTodo });
+    },
+    [dispatch]
+  );
+
+  const updateTodo = useCallback(
+    (updatedTodo) => {
+      dispatch({ type: "UPDATE_TODO", todo: updatedTodo });
+    },
+    [dispatch]
+  );
+
+  const todosEnCours = useMemo(
+    () => state.todoList.filter((todo) => todo.statut === "en cours"),
+    [state.todoList]
+  );
+  const todosTermines = useMemo(
+    () => state.todoList.filter((todo) => todo.statut === "terminé"),
+    [state.todoList]
   );
 
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center p-20">
+    <div className="d-flex  container flex-column justify-content-center align-items-center p-20">
       <h1 className="mb-20">Mes Todo lists</h1>
       <div
         className={`${styles.box} container flex-column justify-content-center  d-flex`}
