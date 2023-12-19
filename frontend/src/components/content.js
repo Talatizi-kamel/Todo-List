@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useReducer, useState, useCallback } from "react";
 import AddTodo from "../components/ComponentsTodo/AddTodo";
 import TodoList from "../components/ComponentsTodo/TodoList";
 import styles from "./Content.module.scss";
@@ -50,6 +50,8 @@ function todoReducer(state, action) {
 function Content() {
   const [state, dispatch] = useReducer(todoReducer, { todoList: [] });
   const [loading, setLoading] = useState(true);
+  const [showAddNotification, setShowAddNotification] = useState(false);
+  const [showUpdateNotification, setShowUpdateNotification] = useState(false);
 
   useEffect(() => {
     const fetchTodoList = async () => {
@@ -78,19 +80,23 @@ function Content() {
     try {
       fetchTodoList();
 
-      const intervalId = setInterval(fetchTodoList, 6000); // Rafraîchir toutes les minutes (ajustez selon vos besoins)
+      const intervalId = setInterval(fetchTodoList, 6000);
 
       return () => {
-        clearInterval(intervalId); // Nettoyer l'intervalle lors du démontage du composant
+        clearInterval(intervalId);
       };
     } catch (error) {
       console.error("Erreur lors de l'initialisation de l'effet", error);
     }
-  }, []); // Aucune dépendance ici pour s'assurer que l'effet s'exécute une seule fois
+  }, []);
 
   const addTodo = useCallback(
     (newTodo) => {
       dispatch({ type: "ADD_TODO", todo: newTodo });
+      setShowAddNotification(true);
+      setTimeout(() => {
+        setShowAddNotification(false);
+      }, 3000);
     },
     [dispatch]
   );
@@ -105,22 +111,27 @@ function Content() {
   const updateTodo = useCallback(
     (updatedTodo) => {
       dispatch({ type: "UPDATE_TODO", todo: updatedTodo });
+      setShowUpdateNotification(true);
+      setTimeout(() => {
+        setShowUpdateNotification(false);
+      }, 3000);
     },
     [dispatch]
   );
 
-  const todosEnCours = useMemo(
-    () => state.todoList.filter((todo) => todo.statut === "en cours"),
-    [state.todoList]
-  );
-  const todosTermines = useMemo(
-    () => state.todoList.filter((todo) => todo.statut === "terminé"),
-    [state.todoList]
-  );
-
   return (
-    <div className="d-flex  container flex-column justify-content-center align-items-center p-20">
+    <div className="d-flex container flex-column justify-content-center align-items-center p-20">
       <h1 className="mb-20">Mes Todo lists</h1>
+      {showAddNotification && (
+        <div className="notification card">
+          <p>Nouvelle tâche ajoutée avec succès !</p>
+        </div>
+      )}
+      {showUpdateNotification && (
+        <div className="notification card">
+          <p>Tâche mise à jour avec succès !</p>
+        </div>
+      )}
       <div
         className={`${styles.box} container flex-column justify-content-center  d-flex`}
       >
@@ -134,7 +145,9 @@ function Content() {
             <div className={`${styles.box} `}>
               <h2 className={`${styles.Encours}`}>En cours</h2>
               <TodoList
-                todoList={todosEnCours}
+                todoList={state.todoList.filter(
+                  (todo) => todo.statut === "en cours"
+                )}
                 deleteTodo={deleteTodo}
                 updateTodo={updateTodo}
               />
@@ -142,7 +155,9 @@ function Content() {
             <div className={`${styles.box} `}>
               <h2 className={`${styles.termine}`}>Terminés</h2>
               <TodoList
-                todoList={todosTermines}
+                todoList={state.todoList.filter(
+                  (todo) => todo.statut === "terminé"
+                )}
                 deleteTodo={deleteTodo}
                 updateTodo={updateTodo}
               />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "./Todoitem.module.scss";
 
 export function getCookie(name) {
@@ -16,8 +16,8 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
   const [editMode, setEditMode] = useState(false);
   const [editedTitle, setEditedTitle] = useState(todo.titre);
   const [editedStatus, setEditedStatus] = useState(todo.statut);
-  const [editeddescription] = useState(todo.description);
-  const [showModal, setShowModal] = useState(false);
+  const [editedDescription] = useState(todo.description);
+  const [showNotification, setShowNotification] = useState(false);
 
   async function tryUpdateTodo() {
     try {
@@ -36,7 +36,7 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
           body: JSON.stringify({
             titre: editedTitle,
             statut: editedStatus,
-            description: editeddescription,
+            description: editedDescription,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,11 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
         const updatedTodo = await response.json();
         updateTodo(updatedTodo);
         setEditMode(false);
-        setShowModal(false); // Fermer la modal après la mise à jour
+        setLoading(false);
+        setShowNotification(true); // Afficher la notification après la mise à jour
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 3000); // Masquer la notification après 3 secondes
       } else {
         console.log("Erreur lors de la mise à jour du todo");
       }
@@ -62,12 +66,10 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
 
   const handleEditClick = () => {
     setEditMode(true);
-    setShowModal(true);
   };
 
   const handleCancel = () => {
     setEditMode(false);
-    setShowModal(false);
   };
 
   const handleDeleteClick = async () => {
@@ -95,7 +97,11 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
         // Suppression côté client après la suppression réussie côté serveur
         deleteTodo(todo);
         setEditMode(false);
-        setShowModal(false); // Fermer la modal après la suppression
+        setLoading(false);
+        setShowNotification(true); // Afficher la notification après la suppression
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 3000); // Masquer la notification après 3 secondes
       } else {
         console.log("Erreur lors de la suppression du todo");
       }
