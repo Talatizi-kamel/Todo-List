@@ -1,4 +1,4 @@
-# Nom de Votre Projet Front-end
+# Projet Front-end
 
 Cette application front-end est le client de l'application Todo List. Elle permet aux utilisateurs de gérer leurs tâches quotidiennes de manière simple et efficace. L'interface utilisateur conviviale permet aux utilisateurs de créer, mettre à jour et supprimer des tâches, ainsi que de suivre leurs progrès.
 

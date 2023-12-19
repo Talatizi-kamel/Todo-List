@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import image from "../assets/images/image.jpg";
 import style from "./Homepage.module.scss";
-import { AuthContext } from "../context/AuthContext"; // Assurez-vous d'importer le contexte d'authentification
+import { AuthContext } from "../context/AuthContext";
 
 function Homepage() {
   const { user } = useContext(AuthContext);

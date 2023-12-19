@@ -37,10 +37,8 @@ export async function LoginUser(credentials) {
     return body.token;
   } else {
     if (response.status === 401) {
-      // Mot de passe incorrect
       throw new Error("L'email ou le mot de passe est incorrect");
     } else if (body) {
-      // Gérer d'autres erreurs renvoyées par le serveur
       throw body;
     } else {
       throw new Error("Oops, une erreur est survenue");
@@ -79,7 +77,6 @@ export async function profile() {
   }
 }
 
-// Fonction utilitaire pour récupérer la valeur d'un cookie par son nom
 export function getCookie(name) {
   const cookies = document.cookie.split(";");
   for (const cookie of cookies) {

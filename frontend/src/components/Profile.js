@@ -23,7 +23,7 @@ function Profile() {
     // Effacer la notification après quelques secondes
     setTimeout(() => {
       setNotification(null);
-    }, 3000); // La notification disparaîtra après 3 secondes
+    }, 3000); //  3 secondes
   };
 
   const handleEdit = () => {
@@ -44,13 +44,12 @@ function Profile() {
 
       if (response.ok) {
         const updatedUser = await response.json();
-        // Mise à jour du contexte avec les nouvelles informations de l'utilisateur
+        // mise à jour du contexte avec les nouvelles informations de l utilisateur
         updateUser(updatedUser);
-        setEditMode(false); // Désactiver le mode édition après la sauvegarde réussie
+        setEditMode(false);
 
         // Afficher la notification de succès
       } else {
-        // Gérer les erreurs si la requête échoue
         console.log("Erreur lors de la mise à jour du profil");
       }
     } catch (error) {
