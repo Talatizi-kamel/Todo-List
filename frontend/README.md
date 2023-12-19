@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# Nom de Votre Projet Front-end
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Cette application front-end est le client de l'application Todo List. Elle permet aux utilisateurs de gérer leurs tâches quotidiennes de manière simple et efficace. L'interface utilisateur conviviale permet aux utilisateurs de créer, mettre à jour et supprimer des tâches, ainsi que de suivre leurs progrès.
 
-## Available Scripts
+## Fonctionnalités
 
-In the project directory, you can run:
+Gestion des Tâches : Ajoutez, modifiez et supprimez des tâches à faire.
+Catégorisation : Organisez vos tâches en cours et terminées.
+Notification : Recevez des notifications lors de la mise à jour ou de la suppression d'une tâche.
+Sécurité : Authentification des utilisateurs avec gestion des sessions.
 
-### `npm start`
+## Table des matières
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [Prérequis](#prérequis)
+- [TechnologiesUtilisées](#Technologies Utilisées)
+- [Installation](#installation)
+- [Utilisation](#utilisation)
+- [Contribuer](#contribuer)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Prérequis
 
-### `npm test`
+- [Node.js](https://nodejs.org/) installé sur votre machine
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies Utilisées
 
-### `npm run build`
+- React.js
+- React Router
+- Sass (SCSS)
+- Context API pour la gestion de l'authentification
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clonez ce dépôt : `git clone https://github.com/Talatizi-kamel/Todo-List.git`
+2. Accédez au répertoire du projet : `cd Todo-List`
+3. Installez les dépendances : `npm install`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Utilisation
 
-### `npm run eject`
+1. Lancez l'application : `npm start`
+2. Ouvrez votre navigateur et accédez à [http://localhost:3000](http://localhost:3000)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contribuer
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Fork le projet
+2. Créez une nouvelle branche (`git checkout -b feature/nouvelle-fonctionnalité`)
+3. Commitez vos changements (`git commit -m 'Ajout de nouvelle-fonctionnalité'`)
+4. Poussez vers la branche (`git push origin feature/nouvelle-fonctionnalité`)
+5. Ouvrez une Pull Request

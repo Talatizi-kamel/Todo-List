@@ -36,6 +36,34 @@ Assurez-vous d'avoir une base de données MySQL configurée avec deux tables pri
 
 Il existe une relation entre la table `users` et `todolists` via la clé étrangère `id_user` dans la table `todolists`.
 
+## Scripts SQL pour la création des tables
+
+```sql
+-- Script pour la table users
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nom VARCHAR(255),
+  prenom VARCHAR(255),
+  email VARCHAR(255) UNIQUE,
+  password VARCHAR(255)
+);
+
+-- Script pour la table todolists
+CREATE TABLE todolists (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_user INT,
+  titre VARCHAR(255),
+  description TEXT,
+  statut VARCHAR(50),
+  FOREIGN KEY (id_user) REFERENCES users(id)
+);
+
+```
+
+### Configuration de la Base de Données
+
+Adaptez le fichier de configuration de la base de données (`dbconfig.js` par exemple) avec les informations de connexion à votre base de données.
+
 ## Lancement du Serveur
 
 - npm install
@@ -101,3 +129,7 @@ Il existe une relation entre la table `users` et `todolists` via la clé étrang
 
 - `GET /api/todolists/:id`
 - Affichez une tâche spécifique en fournissant l'ID de la tâche dans la route.
+
+```
+
+```
