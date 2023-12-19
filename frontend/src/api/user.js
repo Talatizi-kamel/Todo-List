@@ -33,15 +33,17 @@ export async function LoginUser(credentials) {
 
   if (response.ok) {
     document.cookie = `token=${body.token}; path=/; secure; samesite=None`;
-    //console.log("cc je suis le coockie" + document.cookie);
-
     console.log(body);
     return body.token;
   } else {
-    if (body) {
+    if (response.status === 401) {
+      // Mot de passe incorrect
+      throw new Error("L'email ou le mot de passe est incorrect");
+    } else if (body) {
+      // Gérer d'autres erreurs renvoyées par le serveur
       throw body;
     } else {
-      throw new Error("Oops une erreur est survenue");
+      throw new Error("Oops, une erreur est survenue");
     }
   }
 }

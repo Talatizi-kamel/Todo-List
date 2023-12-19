@@ -40,15 +40,24 @@ function Login() {
     try {
       clearErrors();
       await login(credentials);
-    } catch (message) {
-      setError("generic", { type: "generic", message });
+    } catch (error) {
+      if (error instanceof Error) {
+        setError("generic", { type: "generic", message: error.message });
+      } else if (typeof error === "string") {
+        setError("generic", { type: "generic", message: error });
+      } else {
+        setError("generic", {
+          type: "generic",
+          message: "Une erreur est survenue",
+        });
+      }
     }
   });
 
   return (
     <>
       {user ? (
-        <Navigate to="/Todolists" />
+        <Navigate to="/" />
       ) : (
         <div className="flex-fill d-flex align-items-center justify-content-center">
           <form
