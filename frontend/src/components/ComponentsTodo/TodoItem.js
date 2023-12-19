@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./Todoitem.module.scss";
+
 export function getCookie(name) {
   const cookies = document.cookie.split(";");
   for (const cookie of cookies) {
@@ -9,11 +10,14 @@ export function getCookie(name) {
     }
   }
 }
+
 function TodoItem({ todo, deleteTodo, updateTodo }) {
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editedTitle, setEditedTitle] = useState(todo.titre);
   const [editedStatus, setEditedStatus] = useState(todo.statut);
+  const [editeddescription] = useState(todo.description);
+  const [showModal, setShowModal] = useState(false);
 
   async function tryUpdateTodo() {
     try {
@@ -32,6 +36,7 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
           body: JSON.stringify({
             titre: editedTitle,
             statut: editedStatus,
+            description: editeddescription,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -44,6 +49,7 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
         const updatedTodo = await response.json();
         updateTodo(updatedTodo);
         setEditMode(false);
+        setShowModal(false); // Fermer la modal après la mise à jour
       } else {
         console.log("Erreur lors de la mise à jour du todo");
       }
@@ -53,7 +59,18 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
       setLoading(false);
     }
   }
-  async function tryDeleteTodo() {
+
+  const handleEditClick = () => {
+    setEditMode(true);
+    setShowModal(true);
+  };
+
+  const handleCancel = () => {
+    setEditMode(false);
+    setShowModal(false);
+  };
+
+  const handleDeleteClick = async () => {
     try {
       const token = getCookie("token");
 
@@ -77,6 +94,8 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
       if (response.ok) {
         // Suppression côté client après la suppression réussie côté serveur
         deleteTodo(todo);
+        setEditMode(false);
+        setShowModal(false); // Fermer la modal après la suppression
       } else {
         console.log("Erreur lors de la suppression du todo");
       }
@@ -85,9 +104,6 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
     } finally {
       setLoading(false);
     }
-  }
-  const handleCancel = () => {
-    setEditMode(false);
   };
 
   return (
@@ -95,52 +111,50 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
       {loading ? (
         <span className="flex-fill mr-15">Chargement ....</span>
       ) : editMode ? (
-        <div className={`d-flex flex-column ${styles.editmode}`}>
+        <div className={`${styles.modal} d-flex flex-column m-10`}>
+          <h3
+            className={`${
+              editedStatus === "terminé" ? styles.termine : styles.Encours
+            }`}
+          >
+            la tache :
+          </h3>
+          <p>{editedTitle}</p>
           <input
             type="text"
             value={editedTitle}
             onChange={(e) => setEditedTitle(e.target.value)}
             placeholder="Titre"
-            className={`${styles.editmodeinput}`}
+            className=" label p-10"
           />
           <select
-            className={`${styles.editmodeselect}`}
             value={editedStatus}
             onChange={(e) => setEditedStatus(e.target.value)}
+            className={`${styles.editmodeselect}`}
           >
             <option value="en cours">En cours</option>
             <option value="terminé">Terminé</option>
           </select>
-          <button onClick={tryUpdateTodo} className="btn btn-primary">
-            Sauvegarder
-          </button>
-          <button onClick={handleCancel} className="btn btn-secondary">
-            Annuler
-          </button>
+          <div className="d-flex flex-row ">
+            <button onClick={tryUpdateTodo} className="btn btn-primary mr-5">
+              Sauvegarder
+            </button>
+            <button onClick={handleCancel} className="btn btn-primary mr-5">
+              Annuler
+            </button>
+            <button
+              onClick={handleDeleteClick}
+              className="btn btn-reverse-primary mr-5"
+            >
+              Supprimer
+            </button>
+          </div>
         </div>
       ) : (
         <>
-          <span className="flex-fill mr-15">
-            {todo.titre} - Statut : {todo.statut}
-          </span>
-          <button
-            onClick={() => {
-              setEditMode(true);
-              setEditedTitle(todo.titre);
-              setEditedStatus(todo.statut);
-            }}
-            className="btn btn-primary mr-15"
-          >
+          <span className="flex-fill mr-15">{todo.titre}</span>
+          <button onClick={handleEditClick} className="btn btn-primary mr-15">
             Modifier
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              deleteTodo(todo);
-            }}
-            className="btn btn-reverse-primary"
-          >
-            Supprimer
           </button>
         </>
       )}

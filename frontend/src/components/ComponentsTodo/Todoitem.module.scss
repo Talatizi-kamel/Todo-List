@@ -23,6 +23,7 @@
 .editmodeselect {
   width: 100%;
   padding: 8px;
+  margin-top: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -43,4 +44,35 @@
 /* Style pour le bouton au survol */
 .edit-mode button:hover {
   background-color: #45a049;
+}
+
+.edit-mode {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: --var(--box-shadow);
+  z-index: 1000;
+
+  button {
+    margin-top: 10px;
+  }
+}
+
+.Encours {
+  background-color: var(--primary);
+  border-radius: var(--border-radius);
+}
+
+.termine {
+  background-color: var(--green);
+  border-radius: var(--border-radius);
 }

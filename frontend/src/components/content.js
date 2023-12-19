@@ -108,7 +108,7 @@ function Content() {
     <div className="d-flex flex-column justify-content-center align-items-center p-20">
       <h1 className="mb-20">Mes Todo lists</h1>
       <div
-        className={`${styles.box} container flex-column justify-content-center card d-flex`}
+        className={`${styles.box} container flex-column justify-content-center  d-flex`}
       >
         <AddTodo addTodo={addTodo} />
       </div>
@@ -116,7 +116,7 @@ function Content() {
         {loading ? (
           <p>Chargement en cours</p>
         ) : (
-          <div className="d-flex flex-row">
+          <div className="container flex flex-row justify-content-center d-flex ">
             <div className={`${styles.box} `}>
               <h2 className={`${styles.Encours}`}>En cours</h2>
               <TodoList

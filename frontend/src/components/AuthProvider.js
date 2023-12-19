@@ -12,9 +12,11 @@ function AuthProvider({ children }) {
     setUser(newuser);
   }
   async function logout() {
-    // Logique de déconnexion ici
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
     setUser(null);
   }
+
   //console.log(initialUser);
   return (
     <AuthContext.Provider

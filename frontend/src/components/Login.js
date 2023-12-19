@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { AuthContext } from "../context";
 import { useContext } from "react";
+import { Navigate } from "react-router-dom";
 
 function Login() {
   const { login, user } = useContext(AuthContext);
@@ -46,38 +47,46 @@ function Login() {
 
   return (
     <>
-      <div className="flex-fill d-flex align-items-center justify-content-center">
-        <form
-          onSubmit={submit}
-          className={`${styles.form} d-flex flex-column card p-20`}
-        >
-          <h2 className="mb-10">Connexion</h2>
-          <div className="mb-10 d-flex flex-column">
-            <label htmlFor="email">Email</label>
-            <input type="text" name="email" {...register("email")} />
-            {errors.email && (
-              <p className="form-error">{errors.email.message}</p>
-            )}
-          </div>
-          <div className="mb-10 d-flex flex-column">
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" {...register("password")} />
-            {errors.password && (
-              <p className="form-error">{errors.password.message}</p>
-            )}
-          </div>
-          {errors.generic && (
-            <div className="mb-10">
-              <p className="form-error">{errors.generic.message}</p>
+      {user ? (
+        <Navigate to="/Profile" />
+      ) : (
+        <div className="flex-fill d-flex align-items-center justify-content-center">
+          <form
+            onSubmit={submit}
+            className={`${styles.form} d-flex flex-column card p-20`}
+          >
+            <h2 className="mb-10">Connexion</h2>
+            <div className="mb-10 d-flex flex-column">
+              <label htmlFor="email">Email</label>
+              <input type="text" name="email" {...register("email")} />
+              {errors.email && (
+                <p className="form-error">{errors.email.message}</p>
+              )}
             </div>
-          )}
-          <div>
-            <button disabled={isSubmitting} className="btn btn-primary">
-              Connexion
-            </button>
-          </div>
-        </form>
-      </div>
+            <div className="mb-10 d-flex flex-column">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                {...register("password")}
+              />
+              {errors.password && (
+                <p className="form-error">{errors.password.message}</p>
+              )}
+            </div>
+            {errors.generic && (
+              <div className="mb-10">
+                <p className="form-error">{errors.generic.message}</p>
+              </div>
+            )}
+            <div>
+              <button disabled={isSubmitting} className="btn btn-primary">
+                Connexion
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </>
   );
 }
